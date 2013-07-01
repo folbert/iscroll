@@ -969,9 +969,18 @@ IScroll.prototype = {
     this.pages = [];
     this.currentPage = {};
 
-    if ( typeof this.options.snap == 'string' ) {
+    // Save for future reference since this variable may be changed
+    // in the next switch statement.
+    var snapOptionType = typeof this.options.snap;
+
+    if(snapOptionType == 'string') {
+
       this.options.snap = this.scroller.querySelectorAll(this.options.snap);
+
     }
+
+    console.log(snapOptionType);
+    console.log(this.options.snap);
 
     this.on('refresh', function () {
       var i = 0, l,
@@ -982,63 +991,113 @@ IScroll.prototype = {
         stepY = this.options.snapStepY || this.wrapperHeight,
         el;
 
-      if ( this.options.snap === true ) {
-        cx = Math.round( stepX / 2 );
-        cy = Math.round( stepY / 2 );
+      //if ( this.options.snap === true ) {
+      switch(snapOptionType) {
 
-        while ( x > -this.scrollerWidth ) {
-          this.pages[i] = [];
-          l = 0;
-          y = 0;
+        case 'boolean' :
+          cx = Math.round( stepX / 2 );
+          cy = Math.round( stepY / 2 );
 
-          while ( y > -this.scrollerHeight ) {
-            this.pages[i][l] = {
-              x: Math.max(x, this.maxScrollX),
-              y: Math.max(y, this.maxScrollY),
-              width: stepX,
-              height: stepY,
-              cx: x - cx,
-              cy: y - cy
+          while ( x > -this.scrollerWidth ) {
+            this.pages[i] = [];
+            l = 0;
+            y = 0;
+
+            while ( y > -this.scrollerHeight ) {
+              this.pages[i][l] = {
+                x: Math.max(x, this.maxScrollX),
+                y: Math.max(y, this.maxScrollY),
+                width: stepX,
+                height: stepY,
+                cx: x - cx,
+                cy: y - cy
+              };
+
+              y -= stepY;
+              l++;
+            }
+
+            x -= stepX;
+            i++;
+          }
+
+          break;
+
+        case 'string' :
+
+          el = this.options.snap;
+          l = el.length;
+          n = -1;
+
+          for ( ; i < l; i++ ) {
+            if ( i === 0 || el[i].offsetLeft < el[i-1].offsetLeft ) {
+              m = 0;
+              n++;
+            }
+
+            if ( !this.pages[m] ) {
+              this.pages[m] = [];
+            }
+
+            x = Math.max(-el[i].offsetLeft, this.maxScrollX);
+            y = Math.max(-el[i].offsetTop, this.maxScrollY);
+            cx = x - Math.round(el[i].offsetWidth / 2);
+            cy = y - Math.round(el[i].offsetHeight / 2);
+
+            this.pages[m][n] = {
+              x: x,
+              y: y,
+              width: el[i].offsetWidth,
+              height: el[i].offsetHeight,
+              cx: cx,
+              cy: cy
             };
 
-            y -= stepY;
-            l++;
+            m++;
           }
 
-          x -= stepX;
-          i++;
-        }
-      } else {
-        el = this.options.snap;
-        l = el.length;
-        n = -1;
+          break;
 
-        for ( ; i < l; i++ ) {
-          if ( i === 0 || el[i].offsetLeft < el[i-1].offsetLeft ) {
-            m = 0;
-            n++;
+        case 'object' :
+
+          el = this.options.snap;
+          l = el.length;
+
+          n = -1;
+
+          for ( ; i < l; i++ ) {
+
+            if ( i === 0 || el[i][0] < el[i-1][0] ) {
+              m = 0;
+              n++;
+            }
+
+            if ( !this.pages[m] ) {
+              this.pages[m] = [];
+            }
+
+            x = Math.max(-el[i][0], this.maxScrollX);
+            y = Math.max(-el[i][1], this.maxScrollY);
+            //cx = x - Math.round(el[i].offsetWidth / 2);
+            //cy = y - Math.round(el[i].offsetHeight / 2);
+            cx = x - Math.round(100 / 2);
+            cx = x - Math.round(100 / 2);
+
+            this.pages[m][n] = {
+              x: x,
+              y: y,
+              //width: el[i].offsetWidth,
+              //height: el[i].offsetHeight,
+              width: 100,
+              height: 100,
+              cx: cx,
+              cy: cy
+            };
+
+            m++;
           }
 
-          if ( !this.pages[m] ) {
-            this.pages[m] = [];
-          }
-
-          x = Math.max(-el[i].offsetLeft, this.maxScrollX);
-          y = Math.max(-el[i].offsetTop, this.maxScrollY);
-          cx = x - Math.round(el[i].offsetWidth / 2);
-          cy = y - Math.round(el[i].offsetHeight / 2);
-
-          this.pages[m][n] = {
-            x: x,
-            y: y,
-            width: el[i].offsetWidth,
-            height: el[i].offsetHeight,
-            cx: cx,
-            cy: cy
-          };
-
-          m++;
-        }
+          break;
       }
 
       this.goToPage(this.currentPage.pageX || 0, this.currentPage.pageY || 0, 0);
