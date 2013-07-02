@@ -476,6 +476,7 @@ IScroll.prototype = {
   },
 
   _end: function (e) {
+
     if ( !this.enabled || utils.eventType[e.type] !== this.initiated ) {
       return;
     }
@@ -535,6 +536,7 @@ IScroll.prototype = {
     }
 
     if ( this.options.snap ) {
+
       var snap = this._nearestSnap(newX, newY);
       this.currentPage = snap;
       newX = snap.x;
@@ -1171,7 +1173,10 @@ IScroll.prototype = {
       }
     }
 
+    console.log(this.directionX);
+
     if ( i == this.currentPage.pageX ) {
+
       i += this.directionX;
 
       if ( i < 0 ) {

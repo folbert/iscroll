@@ -21,8 +21,11 @@ function loaded () {
     snap: [[0,0,150,200], [150,0,250,200], [400,0,100,200], [500,0,280,200], [780,0,200,200]] // [x,y,width,height]
   });
 
+  var pageToGoTo = 1;
+
   document.getElementById('prevLink').onclick = function() { myScroll.prev(); return false; }
   document.getElementById('nextLink').onclick = function() { myScroll.next(); return false; }
+  document.getElementById('goToPageLink').onclick = function() { myScroll.goToPage(pageToGoTo,0); pageToGoTo++; return false; }
 
 }
 
@@ -157,7 +160,7 @@ body {
 
 <div id="footer">
 
-  <a href="#prev" id="prevLink">Previous</a> | <a href="#next" id="nextLink">Next</a>
+  <a href="#prev" id="prevLink">Previous</a> | <a href="#next" id="nextLink">Next</a> | <a href="#next" id="goToPageLink">Go to page</a>
 
 </div>
 
