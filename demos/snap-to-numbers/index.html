@@ -13,12 +13,17 @@
 var myScroll;
 
 function loaded () {
+
   myScroll = new IScroll('#wrapper', {
     scrollX: true,
     scrollY: true,
     momentum: false,
     snap: [[0,0,150,200], [150,0,250,200], [400,0,100,200], [500,0,280,200], [780,0,200,200]] // [x,y,width,height]
   });
+
+  document.getElementById('prevLink').onclick = function() { myScroll.prev(); return false; }
+  document.getElementById('nextLink').onclick = function() { myScroll.next(); return false; }
+
 }
 
 document.addEventListener('touchmove', function (e) { e.preventDefault(); }, false);
@@ -150,7 +155,11 @@ body {
 
 </div>
 
-<div id="footer">hjhjk</div>
+<div id="footer">
+
+  <a href="#prev" id="prevLink">Previous</a> | <a href="#next" id="nextLink">Next</a>
+
+</div>
 
 </body>
 </html>

@@ -1243,7 +1243,7 @@ IScroll.prototype = {
 
     x++;
 
-    if ( x >= this.pages.length && this.hasVericalScroll ) {
+    if ( x >= this.pages.length && this.hasVerticalScroll ) {
       x = 0;
       y++;
     }
@@ -1257,7 +1257,7 @@ IScroll.prototype = {
 
     x--;
 
-    if ( x < 0 && this.hasVericalScroll ) {
+    if ( x < 0 && this.hasVerticalScroll ) {
       x = 0;
       y--;
     }
