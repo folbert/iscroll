@@ -979,9 +979,6 @@ IScroll.prototype = {
 
     }
 
-    console.log(snapOptionType);
-    console.log(this.options.snap);
-
     this.on('refresh', function () {
       var i = 0, l,
         m = 0, n,
@@ -1076,20 +1073,29 @@ IScroll.prototype = {
               this.pages[m] = [];
             }
 
+            var elWidth;
+            var elHeight;
+
+            // If no width has been set for the current element
+            if(typeof el[i][2] == 'undefined') {
+
+            } else {
+
+              elWidth = el[i][2];
+              elHeight = el[i][3];
+
+            }
+
             x = Math.max(-el[i][0], this.maxScrollX);
             y = Math.max(-el[i][1], this.maxScrollY);
-            //cx = x - Math.round(el[i].offsetWidth / 2);
-            //cy = y - Math.round(el[i].offsetHeight / 2);
-            cx = x - Math.round(100 / 2);
-            cx = x - Math.round(100 / 2);
+            cx = x - Math.round(elWidth / 2);
+            cy = y - Math.round(elHeight / 2);
 
             this.pages[m][n] = {
               x: x,
               y: y,
-              //width: el[i].offsetWidth,
-              //height: el[i].offsetHeight,
-              width: 100,
-              height: 100,
+              width: elWidth,
+              height: elHeight,
               cx: cx,
               cy: cy
             };

@@ -13,11 +13,11 @@
 var myScroll;
 
 function loaded () {
-  myScroll = new IScroll('#wrapper', {
+  myScroll = new IScroll('#wrapperWithNumbers', {
     scrollX: true,
     scrollY: true,
     momentum: false,
-    snap: [[0,0], [250,0], [500,0], [750,0], [1000,0]]
+    snap: [[0,0,150,200], [150,0,250,200], [400,0,100,200], [500,0,280,200], [780,0,200,200]] // [x,y,width,height]
   });
 }
 
@@ -75,7 +75,8 @@ body {
   border-top: 1px solid #444;
 }
 
-#wrapper {
+#wrapper,
+#wrapperWithNumbers {
   position: absolute;
   z-index: 1;
   top: 45px;
@@ -134,7 +135,24 @@ body {
 <body onload="loaded()">
 <div id="header">iScroll</div>
 
-<div id="wrapper">
+<div id="wrapperWithNumbers">
+
+  <!-- [[0,0,150,200], [150,0,250,200], [400,0,100,200], [500,0,280,200], [780,0,200,200]] // [x,y,width,height] -->
+
+  <div id="scroller">
+    <ul>
+      <li style="width: 150px; height: 200px">Cell</li>
+      <li style="width: 250px; height: 200px">Cell</li>
+      <li style="width: 100px; height: 200px">Cell</li>
+      <li style="width: 280px; height: 200px">Cell</li>
+      <li style="width: 200px; height: 200px">Cell</li>
+    </ul>
+  </div>
+
+</div>
+
+<div id="wrapper" style="display: none">
+
   <div id="scroller">
     <ul>
       <li>Cell</li>
